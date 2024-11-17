@@ -234,6 +234,8 @@
 
                         <li class="{{ Route::is('admin.supplier') ? 'active' : '' }}"><a class="nav-link"
                                 href="{{ route('admin.supplier') }}">Suplier</a></li>
+                        <li class="{{ Route::is('admin.purchase-order') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.purchase-order') }}">Purchase Order</a></li>
 
                         {{-- <li class="{{ Route::is('admin.flash-sale-product') ? 'active' : '' }}"><a class="nav-link"
                                 href="{{ route('admin.flash-sale-product') }}">{{ __('admin.Flash Sale Product') }}</a>
