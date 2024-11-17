@@ -218,6 +218,41 @@
                     </a></li>
             @endif
 
+
+            {{-- @if (auth()->user()->can('FlashSale.index') ||
+                    auth()->user()->can('coupon.index') ||
+                    auth()->user()->can('product.free-shipping')) --}}
+                <li
+                    class="nav-item dropdown {{ Route::is('admin.supplier') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown">
+                        <div class="icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span style="color:black">Purchase</span>
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li class="{{ Route::is('admin.supplier') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.supplier') }}">Suplier</a></li>
+
+                        {{-- <li class="{{ Route::is('admin.flash-sale-product') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.flash-sale-product') }}">{{ __('admin.Flash Sale Product') }}</a>
+                        </li>
+                        <li class="{{ Route::is('admin.coupon.*') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.coupon.index') }}">{{ __('admin.Coupon') }}</a></li>
+                        <li
+                            class="{{ Route::is('admin.free_shipping') || Route::is('admin.free_shipping') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.free_shipping') }}">
+
+                                <span style="color:black">Free Shipping </span></a>
+                        </li> --}}
+                    </ul>
+
+                </li>
+            {{-- @endif --}}
+
+
+
             @if (auth()->user()->can('FlashSale.index') ||
                     auth()->user()->can('coupon.index') ||
                     auth()->user()->can('product.free-shipping'))

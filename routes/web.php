@@ -842,6 +842,12 @@ Route::group(['middleware' => ['demo', 'XSS']], function () {
 
         // Purchase
         Route::get("/supplier", [SupplierController::class, "index"])->name("supplier");
+        Route::get("/supplier/create", [SupplierController::class, "create"])->name("supplier.create");
+        Route::post("/supplier", [SupplierController::class, "store"])->name("supplier.store");
+        Route::get("/supplier/{id}/edit", [SupplierController::class, "edit"])->name("supplier.edit");
+        Route::post("/supplier/{id}", [SupplierController::class, "update"])->name("supplier.update");
+        Route::get("/supplier-delete/{id}", [SupplierController::class, "destroy"])->name("supplier.destroy");
+        Route::get("/supplier-change-status/{id}", [SupplierController::class, "changeStatus"])->name("supplier.changeStatus");
 
 
 
