@@ -95,6 +95,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FrontUserController;
 use App\Http\Controllers\WEB\Admin\CollectionBannerController;
+use App\Http\Controllers\WEB\Admin\Purchase\SupplierController;
 use App\Http\Controllers\WEB\Seller\Auth\SellerLoginController;
 use App\Http\Controllers\WEB\Seller\Auth\SellerForgotPasswordController;
 
@@ -172,7 +173,7 @@ Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
 
         // Route::get('/sslcommerz-web-view', [PaymentController::class,   'sslcommerzWebView'])->name('sslcommerz-web-view');
         // Route::post('/sslcommerz-pay',     [PaymentController::class,   'sslcommerz'])->name('sslcommerz-pay');
-        
+
         // Route::post('/sslcommerz-success', [PaymentController::class,   'sslcommerz_success'])->name('sslcommerz-success');
 
         // Route::post('/sslcommerz-failed', [PaymentController::class,   'sslcommerz_failed'])->name('sslcommerz-failed');
@@ -838,6 +839,16 @@ Route::group(['middleware' => ['demo', 'XSS']], function () {
         Route::get('sms-template', [NotificationController::class, 'sms_template'])->name('sms-template');
         Route::get('edit-sms-template/{id}', [NotificationController::class, 'edit_sms_template'])->name('edit-sms-template');
         Route::put('update-sms-template/{id}', [NotificationController::class, 'update_sms_template'])->name('update-sms-template');
+
+        // Purchase
+        Route::get("/supplier", [SupplierController::class, "index"])->name("supplier");
+
+
+
+
+
+
+
     });
 });
 
