@@ -98,6 +98,8 @@ use App\Http\Controllers\WEB\Admin\CollectionBannerController;
 use App\Http\Controllers\WEB\Admin\Purchase\PurchaseItemController;
 use App\Http\Controllers\WEB\Admin\Purchase\PurchaseOrderController;
 use App\Http\Controllers\WEB\Admin\Purchase\SupplierController;
+use App\Http\Controllers\WEB\Admin\Sales\CustomerController as SalesCustomerController;
+use App\Http\Controllers\WEB\Admin\Sales\SalesOrderController;
 use App\Http\Controllers\WEB\Seller\Auth\SellerLoginController;
 use App\Http\Controllers\WEB\Seller\Auth\SellerForgotPasswordController;
 
@@ -857,20 +859,58 @@ Route::group(['middleware' => ['demo', 'XSS']], function () {
         Route::get("/purchase-order", [PurchaseOrderController::class, "index"])->name("purchase-order");
         Route::get("/purchase-order/create", [PurchaseOrderController::class, "create"])->name("purchase-order.create");
         Route::post("/purchase-order", [PurchaseOrderController::class, "store"])->name("purchase-order.store");
-        // Route::get("/purchase-order/{id}/edit", [PurchaseOrderController::class, "edit"])->name("purchase-order.edit");
-        // Route::post("/purchase-order/{id}", [PurchaseOrderController::class, "update"])->name("purchase-order.update");
-        // Route::get("/purchase-order-delete/{id}", [PurchaseOrderController::class, "destroy"])->name("purchase-order.destroy");
-        // Route::get("/purchase-order-change-status/{id}", [PurchaseOrderController::class, "changeStatus"])->name("purchase-order.changeStatus");
+        Route::get("/purchase-order/{id}", [PurchaseOrderController::class, "show"])->name("purchase-order.show");
+        Route::get("/purchase-order/{id}/edit", [PurchaseOrderController::class, "edit"])->name("purchase-order.edit");
+        Route::post("/purchase-order/{id}", [PurchaseOrderController::class, "update"])->name("purchase-order.update");
+        Route::get("/purchase-order-delete/{id}", [PurchaseOrderController::class, "destroy"])->name("purchase-order.destroy");
+
+        // Sales Section
+
+        // Customer
+        Route::get("/customer", [SalesCustomerController::class, "index"])->name("customer");
+        Route::get("/customer/create", [SalesCustomerController::class, "create"])->name("customer.create");
+        Route::post("/customer", [SalesCustomerController::class, "store"])->name("customer.store");
+        Route::get("/customer/{id}/edit", [SalesCustomerController::class, "edit"])->name("customer.edit");
+        Route::post("/customer/{id}", [SalesCustomerController::class, "update"])->name("customer.update");
+        Route::get("/customer-delete/{id}", [SalesCustomerController::class, "destroy"])->name("customer.destroy");
+
+        // // Sales Order
+        Route::get("/sales-order", [SalesOrderController::class, "index"])->name("sales-order");
+        Route::get("/sales-order/create", [SalesOrderController::class, "create"])->name("sales-order.create");
+        Route::post("/sales-order", [SalesOrderController::class, "store"])->name("sales-order.store");
+        Route::get("/sales-order/{id}", [SalesOrderController::class, "show"])->name("sales-order.show");
+        Route::get("/sales-order/{id}/edit", [SalesOrderController::class, "edit"])->name("sales-order.edit");
+        Route::post("/sales-order/{id}", [SalesOrderController::class, "update"])->name("sales-order.update");
+        Route::get("/sales-order-delete/{id}", [SalesOrderController::class, "destroy"])->name("sales-order.destroy");
+
+        // // Purchase Return
+        // Route::get("/purchase-return", [PurchaseReturnController::class, "index"])->name("purchase-return");
+        // Route::get("/purchase-return/create", [PurchaseReturnController::class, "create"])->name("purchase-return.create");
+        // Route::post("/purchase-return", [PurchaseReturnController::class, "store"])->name("purchase-return.store");
+        // Route::get("/purchase-return/{id}", [PurchaseReturnController::class, "show"])->name("purchase-return.show");
+        // Route::get("/purchase-return/{id}/edit", [PurchaseReturnController::class, "edit"])->name("purchase-return.edit");
+        // Route::post("/purchase-return/{id}", [PurchaseReturnController::class, "update"])->name("purchase-return.update");
+        // Route::get("/purchase-return-delete/{id}", [PurchaseReturnController::class, "destroy"])->name("purchase-return.destroy");
+
+        // // Sales Return
+        // Route::get("/sales-return", [SalesReturnController::class, "index"])->name("sales-return");
+        // Route::get("/sales-return/create", [SalesReturnController::class, "create"])->name("sales-return.create");
+        // Route::post("/sales-return", [SalesReturnController::class, "store"])->name("sales-return.store");
+        // Route::get("/sales-return/{id}", [SalesReturnController::class, "show"])->name("sales-return.show");
+        // Route::get("/sales-return/{id}/edit", [SalesReturnController::class, "edit"])->name("sales-return.edit");
+        // Route::post("/sales-return/{id}", [SalesReturnController::class, "update"])->name("sales-return.update");
+        // Route::get("/sales-return-delete/{id}", [SalesReturnController::class, "destroy"])->name("sales-return.destroy");
+
+        // // Report
+        // Route::get("/report", [ReportController::class, "index"])->name("report");
+        // Route::get("/report/create", [ReportController::class, "create"])->name("report.create");
+        // Route::post("/report", [ReportController::class, "store"])->name("report.store");
+        // Route::get("/report/{id}", [ReportController::class, "show"])->name("report.show");
+        // Route::get("/report/{id}/edit", [ReportController::class, "edit"])->name("report.edit");
+        // Route::post("/report/{id}", [ReportController::class, "update"])->name("report.update");
+        // Route::get("/report-delete/{id}", [ReportController::class, "destroy"])->name("report.destroy");
 
 
-        // Purchase Item
-        // Route::get("/purchase-item", [PurchaseItemController::class, "index"])->name("purchase-item");
-        // Route::get("/purchase-item/create", [PurchaseItemController::class, "create"])->name("purchase-item.create");
-        // Route::post("/purchase-item", [PurchaseItemController::class, "store"])->name("purchase-item.store");
-        // Route::get("/purchase-item/{id}/edit", [PurchaseItemController::class, "edit"])->name("purchase-item.edit");
-        // Route::post("/purchase-item/{id}", [PurchaseItemController::class, "update"])->name("purchase-item.update");
-        // Route::get("/purchase-item-delete/{id}", [PurchaseItemController::class, "destroy"])->name("purchase-item.destroy");
-        // Route::get("/purchase-item-change-status/{id}", [PurchaseItemController::class, "changeStatus"])->name("purchase-item.changeStatus");
 
 
 

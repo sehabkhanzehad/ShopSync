@@ -223,10 +223,10 @@
                     auth()->user()->can('coupon.index') ||
                     auth()->user()->can('product.free-shipping')) --}}
                 <li
-                    class="nav-item dropdown {{ Route::is('admin.supplier') ? 'active' : '' }}">
+                    class="nav-item dropdown {{ Route::is('admin.supplier') || Route::is('admin.purchase-order') ? 'active' : '' }}">
                     <a href="#" class="nav-link has-dropdown">
                         <div class="icon">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-shopping-bag"></i>
                         </div>
                         <span style="color:black">Purchase</span>
                     </a>
@@ -237,17 +237,25 @@
                         <li class="{{ Route::is('admin.purchase-order') ? 'active' : '' }}"><a class="nav-link"
                                 href="{{ route('admin.purchase-order') }}">Purchase Order</a></li>
 
-                        {{-- <li class="{{ Route::is('admin.flash-sale-product') ? 'active' : '' }}"><a class="nav-link"
-                                href="{{ route('admin.flash-sale-product') }}">{{ __('admin.Flash Sale Product') }}</a>
-                        </li>
-                        <li class="{{ Route::is('admin.coupon.*') ? 'active' : '' }}"><a class="nav-link"
-                                href="{{ route('admin.coupon.index') }}">{{ __('admin.Coupon') }}</a></li>
-                        <li
-                            class="{{ Route::is('admin.free_shipping') || Route::is('admin.free_shipping') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.free_shipping') }}">
+                    </ul>
 
-                                <span style="color:black">Free Shipping </span></a>
-                        </li> --}}
+                </li>
+
+                <li
+                    class="nav-item dropdown {{ Route::is('admin.customer') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown">
+                        <div class="icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span style="color:black">Sales</span>
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li class="{{ Route::is('admin.customer') || Route::is('admin.sales-order') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.customer') }}">Customers</a></li>
+                        <li class="{{ Route::is('admin.sales-order') ? 'active' : '' }}"><a class="nav-link"
+                                href="{{ route('admin.sales-order') }}">Sales Order</a></li>
+
                     </ul>
 
                 </li>

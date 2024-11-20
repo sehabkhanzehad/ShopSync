@@ -1,7 +1,7 @@
 @extends('admin.master_layout')
 
 @section('title')
-    <title>Purchase Orders</title>
+    <title>Sales Orders</title>
 @endsection
 
 @section('admin-content')
@@ -9,15 +9,15 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Purchase Orders</h1>
+                <h1>Sales Orders</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a
                             href="{{ route('admin.dashboard') }}">{{ __('admin.Dashboard') }}</a></div>
-                    <div class="breadcrumb-item">Purchase Orders</div>
+                    <div class="breadcrumb-item">Sales Orders</div>
                 </div>
             </div>
             <div class="section-body">
-                <a href="{{ route('admin.customer.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                <a href="{{ route('admin.sales-order.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
                     {{ __('admin.Add New') }}</a>
                 <div class="row mt-4">
                     <div class="col">
@@ -40,7 +40,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($purchaseOrders as $sl => $order)
+                                            {{-- @foreach ($purchaseOrders as $sl => $order)
                                                 <tr>
                                                     <td>{{ ++$sl }}</td>
                                                     <td>{{ $order->order_number }}</td>
@@ -51,25 +51,6 @@
                                                     <td>{{ $order->total_amount }}</td>
                                                     <td>{{ $order->status }}</td>
                                                     <td>{{ $order->payment_status }}</td>
-                                                    {{-- <td>
-                                                        @if ($supplier->is_active == 1)
-                                                            <a href="javascript:;"
-                                                                onclick="changeProductCategoryStatus({{ $supplier->id }})">
-                                                                <input id="status_toggle" type="checkbox" checked
-                                                                    data-toggle="toggle" data-on="{{ __('admin.Active') }}"
-                                                                    data-off="{{ __('admin.Inactive') }}"
-                                                                    data-onstyle="success" data-offstyle="danger">
-                                                            </a>
-                                                        @else
-                                                            <a href="javascript:;"
-                                                                onclick="changeProductCategoryStatus({{ $supplier->id }})">
-                                                                <input id="status_toggle" type="checkbox"
-                                                                    data-toggle="toggle" data-on="{{ __('admin.Active') }}"
-                                                                    data-off="{{ __('admin.Inactive') }}"
-                                                                    data-onstyle="success" data-offstyle="danger">
-                                                            </a>
-                                                        @endif
-                                                    </td> --}}
                                                     <td>
                                                         <a href="javascript:;" class="btn btn-info btn-sm"
                                                             onclick="showInvoice({{ $order->id }})"><i class="fa fa-eye"
@@ -89,7 +70,7 @@
                                                     </td>
 
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -204,7 +185,7 @@
         </div>
     </div>
 
-
+{{--
     <script>
         function printInvoice(orderId) {
             $.ajax({
@@ -323,5 +304,5 @@
                 }
             })
         }
-    </script>
+    </script> --}}
 @endsection

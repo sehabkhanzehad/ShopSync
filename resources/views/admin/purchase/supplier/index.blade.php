@@ -73,7 +73,6 @@
                                                                 class="fa fa-trash" aria-hidden="true"></i></a>
 
 
-
                                                     </td>
 
                                                 </tr>
@@ -87,13 +86,6 @@
                 </div>
         </section>
     </div>
-
-
-
-
-
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="deleteMod" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

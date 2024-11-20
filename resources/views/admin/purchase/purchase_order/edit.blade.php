@@ -1,17 +1,17 @@
 @extends('admin.master_layout')
 @section('title')
-    <title>Create Purchase Order</title>
+    <title>Edit Purchase Order</title>
 @endsection
 @section('admin-content')
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Purchase Order</h1>
+                <h1>Edit Purchase Order</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a
                             href="{{ route('admin.dashboard') }}">{{ __('admin.Dashboard') }}</a></div>
-                    <div class="breadcrumb-item">Create Purchase Order</div>
+                    <div class="breadcrumb-item">Edit Purchase Order</div>
                 </div>
             </div>
 
@@ -31,7 +31,9 @@
                                             <select name="supplier_id" id="supplier_id" class="form-control">
                                                 <option value="">Select Supplier</option>
                                                 @foreach ($suppliers as $supplier)
-                                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                                    <option value="{{ $supplier->id }}"
+                                                        {{ $supplier->id == $purchaseOrder->supplier_id ? 'selected' : '' }}>
+                                                        {{ $supplier->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -39,33 +41,41 @@
                                         <div class="form-group col-4">
                                             <label>Order Date:<span class="text-danger">*</span></label>
                                             <input type="date" id="order_date" class="form-control" name="order_date"
-                                                value="{{ date('Y-m-d') }}">
+                                                value="{{ date('Y-m-d', strtotime($purchaseOrder->order_date)) }}">
                                         </div>
 
                                         <div class="form-group col-4">
                                             <label>Notes:</label>
-                                            <textarea name="notes" id="notes" cols="30" rows="50" class="form-control">{{ old('notes') }}</textarea>
+                                            <textarea name="notes" id="notes" cols="30" rows="50" class="form-control">{{ $purchaseOrder->notes }}</textarea>
                                         </div>
 
                                         <div class="form-group col-3">
                                             <label>Expected Delivery Date:</label>
                                             <input type="date" id="expected_delivery_date" class="form-control"
-                                                name="expected_delivery_date" value="{{ old('expected_delivery_date') }}">
+                                                name="expected_delivery_date"
+                                                value="{{ date('Y-m-d', strtotime($purchaseOrder->expected_delivery_date)) }}">
                                         </div>
 
                                         <div class="form-group col-3">
                                             <label>Actual Delivery Date:</label>
                                             <input type="date" id="actual_delivery_date" class="form-control"
-                                                name="actual_delivery_date" value="{{ old('actual_delivery_date') }}">
+                                                name="actual_delivery_date"
+                                                value="{{ date('Y-m-d', strtotime($purchaseOrder->actual_delivery_date)) }}">
                                         </div>
 
                                         <div class="form-group col-3">
                                             <label>Payment Status:<span class="text-danger">*</span></label>
                                             <select name="payment_status" id="payment_status" class="form-control">
                                                 <option value="">Select Payment Status</option>
-                                                <option value="Unpaid">Unpaid</option>
-                                                <option value="Paid">Paid</option>
-                                                <option value="Partially Paid">Partially Paid</option>
+                                                <option value="Unpaid"
+                                                    {{ $purchaseOrder->payment_status == 'Unpaid' ? 'selected' : '' }}>
+                                                    Unpaid</option>
+                                                <option value="Paid"
+                                                    {{ $purchaseOrder->payment_status == 'Paid' ? 'selected' : '' }}>Paid
+                                                </option>
+                                                <option value="Partially Paid"
+                                                    {{ $purchaseOrder->payment_status == 'Partially Paid' ? 'selected' : '' }}>
+                                                    Partially Paid</option>
                                             </select>
                                         </div>
 
@@ -73,10 +83,18 @@
                                             <label>Payment Method:</label>
                                             <select name="payment_method" id="payment_method" class="form-control">
                                                 <option value="">Select Payment Method</option>
-                                                <option value="Cash">Cash</option>
-                                                <option value="Bank Transfer">Bank Transfer</option>
-                                                <option value="Credit Card">Credit Card</option>
-                                                <option value="Check">Check</option>
+                                                <option value="Cash"
+                                                    {{ $purchaseOrder->payment_method == 'Cash' ? 'selected' : '' }}>Cash
+                                                </option>
+                                                <option value="Bank Transfer"
+                                                    {{ $purchaseOrder->payment_method == 'Bank Transfer' ? 'selected' : '' }}>
+                                                    Bank Transfer</option>
+                                                <option value="Credit Card"
+                                                    {{ $purchaseOrder->payment_method == 'Credit Card' ? 'selected' : '' }}>
+                                                    Credit Card</option>
+                                                <option value="Check"
+                                                    {{ $purchaseOrder->payment_method == 'Check' ? 'selected' : '' }}>Check
+                                                </option>
                                             </select>
                                         </div>
 
@@ -93,7 +111,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
+                                                    {{-- <tr>
                                                         <td>
                                                             <select name="item_id[]" class="form-control">
                                                                 <option value="">Select Item</option>
@@ -111,7 +129,29 @@
                                                                 value="0" readonly></td>
                                                         <td><button type="button" class="btn btn-danger remove-item"><i
                                                                     class="fa fa-trash"></i></button></td>
-                                                    </tr>
+                                                                </tr> --}}
+                                                    @foreach ($purchaseOrder->items as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <select name="item_id[]" class="form-control">
+                                                                    <option value="">Select Item</option>
+                                                                    @foreach ($products as $product)
+                                                                        <option value="{{ $product->id }}"
+                                                                            {{ $product->id == $item->product_id ? 'selected' : '' }}>
+                                                                            {{ $product->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" name="quantity[]" class="form-control quantity"
+                                                                    value="{{ $item->quantity }}"></td>
+                                                            <td><input type="number" name="unit_price[]" class="form-control unit_price"
+                                                                    value="{{ $item->price_per_unit }}"></td>
+                                                            <td><input type="number" name="total[]" class="form-control total"
+                                                                    value="{{ $item->subtotal }}" readonly></td>
+                                                            <td><button type="button" class="btn btn-danger remove-item"><i
+                                                                        class="fa fa-trash"></i></button></td>
+                                                        </tr>
+                                                    @endforeach
 
                                                     <tr id="total_amount_row">
 
@@ -121,7 +161,7 @@
                                                             <strong class="float-right">Total Amount:</strong>
                                                         </td>
                                                         <td><input type="number" id="total_amount" class="form-control"
-                                                                name="total_amount" value="0" readonly></td>
+                                                                name="total_amount" value="{{ $purchaseOrder->total_amount }}" readonly></td>
                                                         <td></td>
                                                     </tr>
 
@@ -129,14 +169,14 @@
                                                         <td colspan="3" class="text-right"><strong>Discount:</strong>
                                                         </td>
                                                         <td><input type="number" id="discount" class="form-control"
-                                                                name="discount" value="0"></td>
+                                                                name="discount" value="{{ $purchaseOrder->discount }}"></td>
                                                         <td></td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" class="text-right"><strong>Grand
                                                                 Total:</strong></td>
                                                         <td><input type="number" id="grand_total" class="form-control"
-                                                                name="grand_total" value="0" readonly></td>
+                                                                name="grand_total" value="{{ $purchaseOrder->grand_total }}" readonly></td>
                                                         <td></td>
                                                     </tr>
 
@@ -238,8 +278,7 @@
 
                                     <div class="row">
                                         <div class="col-12">
-                                            <a onclick="formSubmit()"
-                                                class="btn btn-primary float-right">Save</a>
+                                            <a onclick="formSubmit()" class="btn btn-primary float-right">Save</a>
                                         </div>
                                     </div>
                                 </form>
@@ -251,7 +290,6 @@
     </div>
 
     <script>
-
         function formSubmit() {
             let supplierId = $('#supplier_id').val();
             let orderDate = $('#order_date').val();
@@ -298,7 +336,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.purchase-order.store') }}",
+                url: "{{ route('admin.purchase-order.update', $purchaseOrder->id) }}",
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 success: function(response) {
@@ -318,5 +356,7 @@
 
 
         }
+
+        
     </script>
 @endsection

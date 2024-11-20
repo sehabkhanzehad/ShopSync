@@ -1,23 +1,23 @@
 @extends('admin.master_layout')
 @section('title')
-    <title>Create Purchase Order</title>
+    <title>Create Sales Order</title>
 @endsection
 @section('admin-content')
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Purchase Order</h1>
+                <h1>Create Sales Order</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a
                             href="{{ route('admin.dashboard') }}">{{ __('admin.Dashboard') }}</a></div>
-                    <div class="breadcrumb-item">Create Purchase Order</div>
+                    <div class="breadcrumb-item">Create Sales Order</div>
                 </div>
             </div>
 
             <div class="section-body">
-                <a href="{{ route('admin.purchase-order') }}" class="btn btn-primary"><i class="fas fa-list"></i>
-                    Purchase Orders</a>
+                <a href="{{ route('admin.sales-order') }}" class="btn btn-primary"><i class="fas fa-list"></i>
+                    Sales Orders</a>
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -27,11 +27,11 @@
                                     <div class="row">
 
                                         <div class="form-group col-4">
-                                            <label>Supplier Name:<span class="text-danger">*</span></label>
-                                            <select name="supplier_id" id="supplier_id" class="form-control">
-                                                <option value="">Select Supplier</option>
-                                                @foreach ($suppliers as $supplier)
-                                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            <label>Customer Name:<span class="text-danger">*</span></label>
+                                            <select name="customer_id" id="customer_id" class="form-control">
+                                                <option value="">Select Customer</option>
+                                                @foreach ($customers as $customer)
+                                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -45,18 +45,6 @@
                                         <div class="form-group col-4">
                                             <label>Notes:</label>
                                             <textarea name="notes" id="notes" cols="30" rows="50" class="form-control">{{ old('notes') }}</textarea>
-                                        </div>
-
-                                        <div class="form-group col-3">
-                                            <label>Expected Delivery Date:</label>
-                                            <input type="date" id="expected_delivery_date" class="form-control"
-                                                name="expected_delivery_date" value="{{ old('expected_delivery_date') }}">
-                                        </div>
-
-                                        <div class="form-group col-3">
-                                            <label>Actual Delivery Date:</label>
-                                            <input type="date" id="actual_delivery_date" class="form-control"
-                                                name="actual_delivery_date" value="{{ old('actual_delivery_date') }}">
                                         </div>
 
                                         <div class="form-group col-3">
@@ -95,10 +83,12 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <select name="item_id[]" class="form-control">
+                                                            <select id="item_id" onchange="getUnitPrice(this)"
+                                                                name="item_id[]" class="form-control">
                                                                 <option value="">Select Item</option>
                                                                 @foreach ($products as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->name }}
+                                                                    <option data-price="{{ $item->price }}"
+                                                                        value="{{ $item->id }}">{{ $item->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -106,7 +96,7 @@
                                                         <td><input type="number" name="quantity[]"
                                                                 class="form-control quantity" value="1"></td>
                                                         <td><input type="number" name="unit_price[]"
-                                                                class="form-control unit_price" value="0"></td>
+                                                                class="form-control unit_price" value=""></td>
                                                         <td><input type="number" name="total[]" class="form-control total"
                                                                 value="0" readonly></td>
                                                         <td><button type="button" class="btn btn-danger remove-item"><i
@@ -114,7 +104,6 @@
                                                     </tr>
 
                                                     <tr id="total_amount_row">
-
                                                         <td colspan="3">
                                                             <button type="button" class="btn btn-primary float-left"
                                                                 id="add_item">Add Item</button>
@@ -145,101 +134,11 @@
                                         </div>
 
 
-
-                                        <script>
-                                            $(document).ready(function() {
-                                                // Add new item row
-                                                $('#add_item').click(function() {
-                                                    var newRow = `<tr>
-                                                        <td>
-                                                            <select name="item_id[]" class="form-control">
-                                                                <option value="">Select Item</option>
-                                                                @foreach ($products as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td><input type="number" name="quantity[]" class="form-control quantity" value="1"></td>
-                                                        <td><input type="number" name="unit_price[]" class="form-control unit_price" value="0"></td>
-                                                        <td><input type="number" name="total[]" class="form-control total" value="0" readonly></td>
-                                                        <td><button type="button" class="btn btn-danger remove-item"><i class="fa fa-trash"></i></button></td>
-                                                    </tr>`;
-                                                    // $('#items_table tbody').append(newRow);
-                                                    // allways add new row before total amount row
-                                                    $('#total_amount_row').before(newRow);
-                                                });
-
-                                                // Remove item row
-                                                $(document).on('click', '.remove-item', function() {
-                                                    $(this).closest('tr').remove();
-                                                    calculateTotal();
-                                                });
-
-                                                // Calculate total for each row
-                                                $(document).on('input', '.quantity, .unit_price', function() {
-                                                    var row = $(this).closest('tr');
-                                                    var quantity = row.find('.quantity').val();
-                                                    var unit_price = row.find('.unit_price').val();
-                                                    var total = quantity * unit_price;
-                                                    row.find('.total').val(total);
-                                                    calculateTotal();
-                                                });
-
-                                                // Calculate grand total
-                                                function calculateTotal() {
-                                                    let totalAmount = 0;
-                                                    $('.total').each(function() {
-                                                        totalAmount += parseFloat($(this).val());
-                                                    });
-
-                                                    $('#total_amount').val(totalAmount);
-                                                    let discount = parseFloat($('#discount').val());
-                                                    let grandTotal = totalAmount - discount;
-                                                    $('#grand_total').val(grandTotal);
-                                                }
-
-                                                // Make table rows sortable
-                                                $('#items_table tbody').sortable({
-                                                    handle: '.handle',
-                                                    update: function(event, ui) {
-                                                        calculateTotal();
-                                                    }
-                                                });
-                                            });
-                                        </script>
-                                        <script>
-                                            $(document).ready(function() {
-                                                // Calculate total amount and grand total on discount change
-                                                $('#discount').on('input', function() {
-                                                    calculateGrandTotal();
-                                                });
-
-                                                // Calculate total amount and grand total on item quantity or unit price change
-                                                $(document).on('input', '.quantity, .unit_price', function() {
-                                                    calculateGrandTotal();
-                                                });
-
-                                                function calculateGrandTotal() {
-                                                    var totalAmount = 0;
-                                                    $('.total').each(function() {
-                                                        totalAmount += parseFloat($(this).val());
-                                                    });
-                                                    $('#total_amount').val(totalAmount);
-
-                                                    var discount = parseFloat($('#discount').val());
-                                                    var grandTotal = totalAmount - discount;
-                                                    $('#grand_total').val(grandTotal);
-                                                }
-                                            });
-                                        </script>
-
-
                                     </div>
 
                                     <div class="row">
                                         <div class="col-12">
-                                            <a onclick="formSubmit()"
-                                                class="btn btn-primary float-right">Save</a>
+                                            <a onclick="formSubmit()" class="btn btn-primary float-right">Save</a>
                                         </div>
                                     </div>
                                 </form>
@@ -250,16 +149,95 @@
         </section>
     </div>
 
-    <script>
 
+
+    <script>
+        function getUnitPrice(selectElement) {
+            let unitPrice = $(selectElement).find('option:selected').data('price');
+            let row = $(selectElement).closest('tr');
+            row.find('.unit_price').val(unitPrice);
+            // calculateRowTotal(row);
+            var quantity = row.find('.quantity').val();
+            var unit_price = row.find('.unit_price').val();
+            var total = quantity * unit_price;
+            row.find('.total').val(total);
+
+            let totalAmount = 0;
+            $('.total').each(function() {
+                totalAmount += parseFloat($(this).val());
+            });
+            $('#total_amount').val(totalAmount);
+            let discount = parseFloat($('#discount').val());
+            let grandTotal = totalAmount - discount;
+            $('#grand_total').val(grandTotal);
+        }
+
+        $(document).ready(function() {
+            // Add new item row
+            $('#add_item').click(function() {
+                var newRow = `<tr>
+                                                        <td class="handle">
+                                                            <select name="item_id[]" class="form-control" onchange="getUnitPrice(this)">
+                                                                <option value="">Select Item</option>
+                                                                @foreach ($products as $item)
+                                                                    <option data-price="{{ $item->price }}" value="{{ $item->id }}">{{ $item->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td><input type="number" name="quantity[]" class="form-control quantity" value="1"></td>
+                                                        <td><input type="number" name="unit_price[]" class="form-control unit_price" value="0"></td>
+                                                        <td><input type="number" name="total[]" class="form-control total" value="0" readonly></td>
+                                                        <td><button type="button" class="btn btn-danger remove-item"><i class="fa fa-trash"></i></button></td>
+                                                    </tr>`;
+                $('#total_amount_row').before(newRow);
+            });
+
+            // Remove item row
+            $(document).on('click', '.remove-item', function() {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            });
+
+            // Calculate total for each row
+            $(document).on('input', '.quantity, .unit_price', function() {
+                var row = $(this).closest('tr');
+                calculateRowTotal(row);
+            });
+
+            // Calculate grand total
+            function calculateRowTotal(row) {
+                var quantity = row.find('.quantity').val();
+                var unit_price = row.find('.unit_price').val();
+                var total = quantity * unit_price;
+                row.find('.total').val(total);
+                calculateTotal();
+            }
+
+            function calculateTotal() {
+                let totalAmount = 0;
+                $('.total').each(function() {
+                    totalAmount += parseFloat($(this).val());
+                });
+
+                $('#total_amount').val(totalAmount);
+                let discount = parseFloat($('#discount').val());
+                let grandTotal = totalAmount - discount;
+                $('#grand_total').val(grandTotal);
+            }
+
+            // Calculate total amount and grand total on discount change
+            $('#discount').on('input', function() {
+                calculateTotal();
+            });
+        });
+    </script>
+
+    <script>
         function formSubmit() {
-            let supplierId = $('#supplier_id').val();
+            let customerId = $('#customer_id').val();
             let orderDate = $('#order_date').val();
             let notes = $('#notes').val();
-            let expectedDeliveryDate = $('#expected_delivery_date').val();
-            let actualDeliveryDate = $('#actual_delivery_date').val();
             let paymentStatus = $('#payment_status').val();
-
             let paymentMethod = $('#payment_method').val();
             let totalAmount = $('#total_amount').val();
             let discount = $('#discount').val();
@@ -283,11 +261,9 @@
             });
 
             let data = {
-                supplier_id: supplierId,
+                customer_id: customerId,
                 order_date: orderDate,
                 notes: notes,
-                expected_delivery_date: expectedDeliveryDate,
-                actual_delivery_date: actualDeliveryDate,
                 payment_status: paymentStatus,
                 payment_method: paymentMethod,
                 total_amount: totalAmount,
@@ -298,7 +274,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.purchase-order.store') }}",
+                url: "{{ route('admin.sales-order.store') }}",
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 success: function(response) {
@@ -312,11 +288,6 @@
                     }
                 }
             });
-
-
-
-
-
         }
     </script>
 @endsection

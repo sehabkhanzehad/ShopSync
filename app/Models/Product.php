@@ -96,6 +96,10 @@ class Product extends Model
          return $this->hasMany(ProductStock::class, 'product_id');
     }
     
+    public function purchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
     
 
 }
