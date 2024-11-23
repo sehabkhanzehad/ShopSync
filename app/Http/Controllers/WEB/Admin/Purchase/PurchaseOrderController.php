@@ -52,6 +52,7 @@ class PurchaseOrderController extends Controller
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
                     'price_per_unit' => $item['unit_price'],
+                    'sell_price' => $item['sell_price'],
                     'subtotal' => $item['total'],
                 ]);
             }
@@ -115,10 +116,11 @@ class PurchaseOrderController extends Controller
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
                     'price_per_unit' => $item['unit_price'],
+                    'sell_price' => $item['sell_price'],
                     'subtotal' => $item['total'],
                 ]);
             }
-        
+
             return response()->json(
                 [
                     'status' => true,

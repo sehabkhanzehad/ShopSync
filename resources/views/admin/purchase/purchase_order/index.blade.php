@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="section-body">
-                <a href="{{ route('admin.customer.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                <a href="{{ route('admin.purchase-order.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
                     {{ __('admin.Add New') }}</a>
                 <div class="row mt-4">
                     <div class="col">
@@ -180,7 +180,8 @@
                                             <th>#</th>
                                             <th>Item Name</th>
                                             <th>Quantity</th>
-                                            <th>Unit Price</th>
+                                            <th>Purchase Price</th>
+                                            <th>Sell Price</th>
                                             <th>Total</th>
                                         </tr>
                                     </thead>
@@ -231,6 +232,7 @@
                                 <td>${item.product.name}</td>
                                 <td>${item.quantity}</td>
                                 <td>${item.price_per_unit}</td>
+                                <td>${item.sell_price}</td>
                                 <td>${item.subtotal}</td>
                             </tr>
                         `);
@@ -278,6 +280,7 @@
                                 <td>${item.product.name}</td>
                                 <td>${item.quantity}</td>
                                 <td>${item.price_per_unit}</td>
+                                <td>${item.sell_price}</td>
                                 <td>${item.subtotal}</td>
                             </tr>
                         `);

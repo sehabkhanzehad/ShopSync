@@ -105,7 +105,8 @@
                                                     <tr>
                                                         <th>Item</th>
                                                         <th>Quantity</th>
-                                                        <th>Unit Price</th>
+                                                        <th>Purchase Price</th>
+                                                        <th>Sell Price</th>
                                                         <th>Total</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -146,6 +147,7 @@
                                                                     value="{{ $item->quantity }}"></td>
                                                             <td><input type="number" name="unit_price[]" class="form-control unit_price"
                                                                     value="{{ $item->price_per_unit }}"></td>
+                                                            <td><input type="number" name="sell_price[]" class="form-control sell_price" value="{{ $item->sell_price }}"></td>
                                                             <td><input type="number" name="total[]" class="form-control total"
                                                                     value="{{ $item->subtotal }}" readonly></td>
                                                             <td><button type="button" class="btn btn-danger remove-item"><i
@@ -155,7 +157,7 @@
 
                                                     <tr id="total_amount_row">
 
-                                                        <td colspan="3">
+                                                        <td colspan="4">
                                                             <button type="button" class="btn btn-primary float-left"
                                                                 id="add_item">Add Item</button>
                                                             <strong class="float-right">Total Amount:</strong>
@@ -166,14 +168,14 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td colspan="3" class="text-right"><strong>Discount:</strong>
+                                                        <td colspan="4" class="text-right"><strong>Discount:</strong>
                                                         </td>
                                                         <td><input type="number" id="discount" class="form-control"
                                                                 name="discount" value="{{ $purchaseOrder->discount }}"></td>
                                                         <td></td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="3" class="text-right"><strong>Grand
+                                                        <td colspan="4" class="text-right"><strong>Grand
                                                                 Total:</strong></td>
                                                         <td><input type="number" id="grand_total" class="form-control"
                                                                 name="grand_total" value="{{ $purchaseOrder->grand_total }}" readonly></td>
@@ -201,6 +203,7 @@
                                                         </td>
                                                         <td><input type="number" name="quantity[]" class="form-control quantity" value="1"></td>
                                                         <td><input type="number" name="unit_price[]" class="form-control unit_price" value="0"></td>
+                                                        <td><input type="number" name="sell_price[]" class="form-control" value="0"></td>
                                                         <td><input type="number" name="total[]" class="form-control total" value="0" readonly></td>
                                                         <td><button type="button" class="btn btn-danger remove-item"><i class="fa fa-trash"></i></button></td>
                                                     </tr>`;
@@ -308,6 +311,7 @@
                 let itemId = $(this).find('select[name="item_id[]"]').val();
                 let quantity = $(this).find('input[name="quantity[]"]').val();
                 let unitPrice = $(this).find('input[name="unit_price[]"]').val();
+                let sellPrice = $(this).find('input[name="sell_price[]"]').val();
                 let total = $(this).find('input[name="total[]"]').val();
 
                 if (itemId) {
@@ -315,6 +319,7 @@
                         product_id: itemId,
                         quantity: quantity,
                         unit_price: unitPrice,
+                        sell_price: sellPrice,
                         total: total
                     });
                 }
@@ -357,6 +362,6 @@
 
         }
 
-        
+
     </script>
 @endsection
