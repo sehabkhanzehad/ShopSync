@@ -883,6 +883,8 @@ Route::group(['middleware' => ['demo', 'XSS']], function () {
         Route::post("/sales-order/{id}", [SalesOrderController::class, "update"])->name("sales-order.update");
         Route::get("/sales-order-delete/{id}", [SalesOrderController::class, "destroy"])->name("sales-order.destroy");
 
+
+
         // // Purchase Return
         // Route::get("/purchase-return", [PurchaseReturnController::class, "index"])->name("purchase-return");
         // Route::get("/purchase-return/create", [PurchaseReturnController::class, "create"])->name("purchase-return.create");

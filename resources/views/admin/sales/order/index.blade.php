@@ -30,26 +30,20 @@
                                                 <th>#</th>
                                                 <th>Order No/Id</th>
                                                 <th>Order Date</th>
-                                                <th>Supplier</th>
-                                                <th>Supplier Company</th>
-                                                <th>Delivery Date</th>
+                                                <th>Customer</th>
                                                 <th>Amount</th>
-                                                <th>Order Status</th>
                                                 <th>Payment Status</th>
                                                 <th>{{ __('admin.Action') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @foreach ($purchaseOrders as $sl => $order)
+                                            @foreach ($salesOrders as $sl => $order)
                                                 <tr>
                                                     <td>{{ ++$sl }}</td>
                                                     <td>{{ $order->order_number }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($order->order_date)) }}</td>
-                                                    <td>{{ $order->supplier->name }}</td>
-                                                    <td>{{ $order->supplier->company_name }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($order->actual_delivery_date)) }}</td>
-                                                    <td>{{ $order->total_amount }}</td>
-                                                    <td>{{ $order->status }}</td>
+                                                    <td>{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
+                                                    <td>{{ $order->customer->name }}</td>
+                                                    <td>{{ $order->grand_total }}</td>
                                                     <td>{{ $order->payment_status }}</td>
                                                     <td>
                                                         <a href="javascript:;" class="btn btn-info btn-sm"
@@ -61,8 +55,9 @@
                                                                 class="fa fa-print" aria-hidden="true"></i></a>
 
 
-                                                        <a href="{{ route('admin.purchase-order.edit', $order->id) }}" class="btn btn-primary btn-sm"><i
-                                                                class="fa fa-edit" aria-hidden="true"></i></a>
+                                                        <a href="{{ route('admin.sales-order.edit', $order->id) }}"
+                                                            class="btn btn-primary btn-sm"><i class="fa fa-edit"
+                                                                aria-hidden="true"></i></a>
 
                                                         <a href="javascript:;" class="btn btn-danger btn-sm"
                                                             onclick="openDeleteModal({{ $order->id }})"><i
@@ -70,7 +65,7 @@
                                                     </td>
 
                                                 </tr>
-                                            @endforeach --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -137,24 +132,22 @@
                                 <div class="invoice-header">
                                     <h2>Invoice</h2>
                                     <div class="invoice-info">
-                                        <p id = "order_no" class="mb-0"></p>
-                                        <p id = "order_date" class="mb-0"></p>
-                                        <p id = "delivery_date" class="mb-0"></p>
-                                        <p id = 'order_status' class="mb-0"></p>
+                                        <p id = "sales_no" class="mb-0"></p>
+                                        <p id = "sales_date" class="mb-0"></p>
+                                        <p id = 'sales_status' class="mb-0"></p>
                                     </div>
                                 </div>
 
                                 <div class="invoice-supplier">
-                                    <h4>Supplier Details</h4>
-                                    <p id="supplier_name" class="mb-0"></p>
-                                    <p id="supplier_company" class="mb-0"></p>
-                                    <p id="supplier_address" class="mb-0"></p>
-                                    <p id="supplier_contact" class="mb-0"></p>
+                                    <h4>Customer Details</h4>
+                                    <p id="customer_name" class="mb-0"></p>
+                                    <p id="customer_address" class="mb-0"></p>
+                                    <p id="customer_contact" class="mb-0"></p>
                                 </div>
                             </div>
 
                             <div class="invoice-items mt-3">
-                                <h4>Order Items</h4>
+                                <h4>Items</h4>
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
@@ -185,25 +178,24 @@
         </div>
     </div>
 
-{{--
+
     <script>
         function printInvoice(orderId) {
             $.ajax({
-
                 type: "GET",
-                url: "{{ url('/admin/purchase-order') }}/" + orderId,
+                url: "{{ url('/admin/sales-order') }}/" + orderId,
                 success: function(response) {
 
-                    $('#order_no').html('<strong>Order No: </strong>' + response.order_number);
-                    $('#order_date').html('<strong>Order Date: </strong>' + response.order_date);
-                    $('#delivery_date').html('<strong>Delivery Date: </strong>' + response
-                    .actual_delivery_date);
-                    $('#order_status').html('<strong>Order Status: </strong>' + response.status + '(' + response
-                        .payment_status + ')');
-                    $('#supplier_name').html('<strong>Name: </strong>' + response.supplier.name);
-                    $('#supplier_company').html('<strong>Company: </strong>' + response.supplier.company_name);
-                    $('#supplier_address').html('<strong>Address: </strong>' + response.supplier.address);
-                    $('#supplier_contact').html('<strong>Contact: </strong>' + response.supplier.phone);
+                    $('#sales_no').html('<strong>Order No: </strong>' + response.order_number);
+                    $('#sales_date').html('<strong>Order Date: </strong>' + response.created_at);
+                    $('#sales_status').html('<strong>Order Status: </strong>' + response.payment_status + '(' +
+                        response
+                        .payment_method + ')');
+
+
+                    $('#customer_name').html('<strong>Name: </strong>' + response.customer.name);
+                    $('#customer_address').html('<strong>Address: </strong>' + response.customer.address);
+                    $('#customer_contact').html('<strong>Contact: </strong>' + response.customer.phone);
                     // add item with foreach loop here in tr table
                     response.items.forEach(function(item) {
                         $('#order_items').append(`
@@ -238,19 +230,19 @@
             $.ajax({
 
                 type: "GET",
-                url: "{{ url('/admin/purchase-order') }}/" + orderId,
+                url: "{{ url('/admin/sales-order') }}/" + orderId,
                 success: function(response) {
 
-                    $('#order_no').html('<strong>Order No: </strong>' + response.order_number);
-                    $('#order_date').html('<strong>Order Date: </strong>' + response.order_date);
-                    $('#delivery_date').html('<strong>Delivery Date: </strong>' + response
-                    .actual_delivery_date);
-                    $('#order_status').html('<strong>Order Status: </strong>' + response.status + '(' + response
-                        .payment_status + ')');
-                    $('#supplier_name').html('<strong>Name: </strong>' + response.supplier.name);
-                    $('#supplier_company').html('<strong>Company: </strong>' + response.supplier.company_name);
-                    $('#supplier_address').html('<strong>Address: </strong>' + response.supplier.address);
-                    $('#supplier_contact').html('<strong>Contact: </strong>' + response.supplier.phone);
+                    $('#sales_no').html('<strong>Order No: </strong>' + response.order_number);
+                    $('#sales_date').html('<strong>Order Date: </strong>' + response.created_at);
+                    $('#sales_status').html('<strong>Order Status: </strong>' + response.payment_status + '(' +
+                        response
+                        .payment_method + ')');
+
+
+                    $('#customer_name').html('<strong>Name: </strong>' + response.customer.name);
+                    $('#customer_address').html('<strong>Address: </strong>' + response.customer.address);
+                    $('#customer_contact').html('<strong>Contact: </strong>' + response.customer.phone);
                     // add item with foreach loop here in tr table
                     response.items.forEach(function(item) {
                         $('#order_items').append(`
@@ -289,7 +281,7 @@
             var id = $("#delete_id").val();
             $.ajax({
                 type: "get",
-                url: "{{ url('/admin/purchase-order-delete') }}" + "/" + id,
+                url: "{{ url('/admin/sales-order-delete') }}" + "/" + id,
                 success: function(response) {
                     if (response.status == true) {
                         toastr.success(response.message);
@@ -304,5 +296,5 @@
                 }
             })
         }
-    </script> --}}
+    </script>
 @endsection
