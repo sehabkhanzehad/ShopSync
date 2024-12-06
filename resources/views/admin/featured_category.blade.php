@@ -72,7 +72,6 @@
                                                     <td>
                                                         <a href="javascript:;" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" onclick="deleteData({{ $popularCategory->id }})"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                                     </td>
-
                                                 </tr>
                                               @endforeach
                                         </tbody>
@@ -112,7 +111,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                          <div class="form-controll"> 
+                          <div class="form-controll">
                             <label for=""> Add Serial </label>
                             <input type="text" name="serial">
                           </div>
